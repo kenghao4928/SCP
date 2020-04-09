@@ -1,0 +1,59 @@
+---
+applications:
+# Application
+- name: product
+  memory: 1024M
+  timeout: 300
+  routes:
+    - route: product.cfapps.us10.hana.ondemand.com
+  path: product/application/target/product-application.jar
+  buildpacks:
+    - sap_java_buildpack
+  env:
+    TARGET_RUNTIME: main
+    SPRING_PROFILES_ACTIVE: 'cloud'
+    JBP_CONFIG_SAPJVM_MEMORY_SIZES: 'metaspace:128m..'
+  services:
+    - my-destination
+    - my-xsuaa
+
+- name: businesspartner
+  memory: 1024M
+  timeout: 300
+  routes:
+    - route: bp.cfapps.us10.hana.ondemand.com
+  path: businesspartner/application/target/businesspartner-application.jar
+  buildpacks:
+    - sap_java_buildpack
+  env:
+    TARGET_RUNTIME: main
+    SPRING_PROFILES_ACTIVE: 'cloud'
+    JBP_CONFIG_SAPJVM_MEMORY_SIZES: 'metaspace:128m..'
+  services:
+    - my-destination
+
+# Application Router
+- name: approuter
+  routes:
+    - route: approuter-s0017064358trial.cfapps.us10.hana.ondemand.com
+  path: approuter/appfolder
+  memory: 128M
+  buildpacks:
+    - nodejs_buildpack
+  env:
+    TENANT_HOST_PATTERN: approuter-(.*).cfapps.us10.hana.ondemand.com
+    destinations: >
+      [
+        {
+          "name": "bp-destination",
+          "url" : "http://bp.cfapps.us10.hana.ondemand.com",
+          "forwardAuthToken": true
+        },
+        {
+          "name": "product-destination",
+          "url" : "http://product.cfapps.us10.hana.ondemand.com",
+          "forwardAuthToken": true
+        }
+      ]
+  services:
+      - my-xsuaa

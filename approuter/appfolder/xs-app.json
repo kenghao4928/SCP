@@ -1,0 +1,13 @@
+{
+  "welcomeFile": "index.html",
+  "routes": [
+    {
+      "source": "^/bp",
+      "destination": "bp-destination"
+    },
+    {
+      "source": "^/product",
+      "destination": "product-destination"
+    }
+  ]
+}

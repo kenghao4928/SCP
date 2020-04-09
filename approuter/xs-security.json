@@ -1,0 +1,37 @@
+{
+  "xsappname": "businesspartner-s0017064358trial",
+  "tenant-mode": "shared",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Display",
+      "description": "display"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "Required to view things in our solution",
+      "scope-references"     : [
+        "$XSAPPNAME.Display"
+      ]
+    }
+  ],
+  "role-collections": [
+		{
+			"name": "ProductListViewer",
+			"description": "Product List Viewer",
+			"role-template-references": [
+				"$XSAPPNAME.Viewer"
+			]
+		}
+	],
+  "oauth2-configuration": {
+     "token-validity": 43200,
+     "redirect-uris": [
+                      "http://approuter-product.cfapps.us10.hana.ondemand.com",
+                      "http://approuter-bp.cfapps.us10.hana.ondemand.com"],
+     "refresh-token-validity": 1800,
+     "system-attributes ": ["groups","rolecollections"],
+     "allowedproviders ": ["axvz9npr3.accounts.ondemand.com"]
+    }
+}

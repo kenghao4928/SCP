@@ -1,0 +1,17 @@
+---
+applications:
+
+- name: businesspartner
+  memory: 1024M
+  timeout: 300
+  routes:
+    - route: approuter-product.cfapps.us10.hana.ondemand.com
+  path: application/target/businesspartner-application.jar
+  buildpacks:
+    - sap_java_buildpack
+  env:
+    TARGET_RUNTIME: main
+    SPRING_PROFILES_ACTIVE: 'cloud'
+    JBP_CONFIG_SAPJVM_MEMORY_SIZES: 'metaspace:128m..'
+  services:
+    - my-destination
